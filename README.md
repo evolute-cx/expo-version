@@ -25,9 +25,9 @@ Version management tool for Expo React Native apps, similar to `npm version` but
 Now when you run `npm run build:ios`, it will:
 
 1. 🔍 Show your current version from `app.json`
-2. 🎯 Prompt you to select the new version (patch/minor/major/custom)
-3. 📝 Update both `app.json` and `package.json`
-4. 📦 Commit and tag the version change
+2. 🎯 Prompt you to select the new version (keep current/patch/minor/major/custom)
+3. 📝 Update both `app.json` and `package.json` (if version changed)
+4. 📦 Commit and tag the version change (if version changed)
 5. 🚀 Trigger the EAS build with the correct version
 
 **Result**: No more forgetting to update versions, no more builds with wrong version numbers, and a clean git history of your releases.
@@ -66,9 +66,14 @@ expo-version
 This will:
 
 1. Show the current version from `app.json`
-2. Prompt you to select patch, minor, major, or custom version
-3. Update both `app.json` and `package.json`
-4. Create a git commit and tag (if in a git repository)
+2. Prompt you to select from these options:
+   - **keep current** - Keep the existing version (useful for rebuilds)
+   - **patch** - Increment patch version (e.g., 1.2.3 → 1.2.4)
+   - **minor** - Increment minor version (e.g., 1.2.3 → 1.3.0)
+   - **major** - Increment major version (e.g., 1.2.3 → 2.0.0)
+   - **custom** - Enter a custom version
+3. Update both `app.json` and `package.json` (if version changed)
+4. Create a git commit and tag (if in a git repository and version changed)
 
 ### Direct version specification
 
@@ -141,7 +146,12 @@ await expoVersion.run("1.2.3");
 ### Basic usage
 
 ```bash
-# Interactive version selection
+# Interactive version selection:
+# ❯ keep current (1.2.3)
+#   patch (1.2.4)
+#   minor (1.3.0)
+#   major (2.0.0)
+#   custom
 expo-version
 
 # Set specific version

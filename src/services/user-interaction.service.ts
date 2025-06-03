@@ -1,7 +1,7 @@
-import chalk from 'chalk';
-import prompts from 'prompts';
-import { UserInteractionService, ReleaseType } from '../types';
-import { VersionServiceImpl } from './version.service';
+import chalk from "chalk";
+import prompts from "prompts";
+import { UserInteractionService, ReleaseType } from "../types";
+import { VersionServiceImpl } from "./version.service";
 
 export class UserInteractionServiceImpl implements UserInteractionService {
   private versionService = new VersionServiceImpl();
@@ -24,10 +24,10 @@ export class UserInteractionServiceImpl implements UserInteractionService {
 
   async confirmContinue(message: string): Promise<boolean> {
     const response = await prompts({
-      type: 'confirm',
-      name: 'continue',
+      type: "confirm",
+      name: "continue",
       message,
-      initial: false
+      initial: false,
     });
 
     return response.continue;
@@ -37,13 +37,13 @@ export class UserInteractionServiceImpl implements UserInteractionService {
     const choices = this.createVersionChoices(currentVersion);
 
     const response = await prompts({
-      type: 'select',
-      name: 'versionType',
-      message: 'Select version increment:',
-      choices
+      type: "select",
+      name: "versionType",
+      message: "Select version increment:",
+      choices,
     });
 
-    if (response.versionType === 'custom') {
+    if (response.versionType === "custom") {
       return this.promptForCustomVersion();
     }
 
@@ -51,25 +51,30 @@ export class UserInteractionServiceImpl implements UserInteractionService {
   }
 
   private createVersionChoices(currentVersion: string) {
-    const releaseTypes: ReleaseType[] = ['patch', 'minor', 'major'];
-    
+    const releaseTypes: ReleaseType[] = ["patch", "minor", "major"];
+
     return [
-      ...releaseTypes.map(type => ({
-        title: `${type} (${this.versionService.increment(currentVersion, type)})`,
-        value: this.versionService.increment(currentVersion, type)
+      { title: `keep current (${currentVersion})`, value: currentVersion },
+      ...releaseTypes.map((type) => ({
+        title: `${type} (${this.versionService.increment(
+          currentVersion,
+          type
+        )})`,
+        value: this.versionService.increment(currentVersion, type),
       })),
-      { title: 'custom', value: 'custom' }
+      { title: "custom", value: "custom" },
     ];
   }
 
   private async promptForCustomVersion(): Promise<string> {
     const response = await prompts({
-      type: 'text',
-      name: 'version',
-      message: 'Enter custom version:',
-      validate: (value: string) => this.versionService.validate(value) || 'Invalid semver format'
+      type: "text",
+      name: "version",
+      message: "Enter custom version:",
+      validate: (value: string) =>
+        this.versionService.validate(value) || "Invalid semver format",
     });
 
     return response.version;
   }
-} 
+}
