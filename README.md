@@ -2,6 +2,34 @@
 
 Version management tool for Expo React Native apps, similar to `npm version` but designed specifically for Expo projects.
 
+## Use Case
+
+**Problem**: When using EAS Build, you need to manually update the version in `app.json` before triggering a build. This manual process is error-prone and breaks your development flow.
+
+**Solution**: `expo-version` integrates seamlessly into your build workflow by prompting for version updates before builds, ensuring your app version is always up-to-date.
+
+### Typical Workflow Integration
+
+```json
+{
+  "scripts": {
+    "build:ios": "expo-version && eas build --platform ios",
+    "build:android": "expo-version && eas build --platform android",
+    "build:all": "expo-version && eas build --platform all"
+  }
+}
+```
+
+Now when you run `npm run build:ios`, it will:
+
+1. 🔍 Show your current version from `app.json`
+2. 🎯 Prompt you to select the new version (patch/minor/major/custom)
+3. 📝 Update both `app.json` and `package.json`
+4. 📦 Commit and tag the version change
+5. 🚀 Trigger the EAS build with the correct version
+
+**Result**: No more forgetting to update versions, no more builds with wrong version numbers, and a clean git history of your releases.
+
 ## Features
 
 - 📱 **Expo-specific**: Reads and updates versions in both `app.json` and `package.json`
@@ -34,6 +62,7 @@ expo-version
 ```
 
 This will:
+
 1. Show the current version from `app.json`
 2. Prompt you to select patch, minor, major, or custom version
 3. Update both `app.json` and `package.json`
@@ -57,10 +86,10 @@ expo-version 1.2.3 --no-git-tag-version
 
 ## Options
 
-| Option | Description |
-|--------|-------------|
+| Option                 | Description                                       |
+| ---------------------- | ------------------------------------------------- |
 | `--no-git-tag-version` | Prevent git tag creation (similar to npm version) |
-| `--help`, `-h` | Show help message |
+| `--help`, `-h`         | Show help message                                 |
 
 ## Requirements
 
@@ -96,18 +125,19 @@ When run in a git repository, expo-version will:
 You can also use expo-version programmatically in your Node.js scripts:
 
 ```typescript
-import { ExpoVersion } from 'expo-version';
+import { ExpoVersion } from "expo-version";
 
-const expoVersion = new ExpoVersion('/path/to/project', {
-  noGitTagVersion: true
+const expoVersion = new ExpoVersion("/path/to/project", {
+  noGitTagVersion: true,
 });
 
-await expoVersion.run('1.2.3');
+await expoVersion.run("1.2.3");
 ```
 
 ## Examples
 
 ### Basic usage
+
 ```bash
 # Interactive version selection
 expo-version
@@ -120,10 +150,14 @@ expo-version 2.1.0 --no-git-tag-version
 ```
 
 ### EAS Build integration
+
 ```json
 {
   "name": "my-expo-app",
   "scripts": {
+    "build:ios": "expo-version && eas build --platform ios",
+    "build:android": "expo-version && eas build --platform android",
+    "build:all": "expo-version && eas build --platform all",
     "eas-build-pre-install": "expo-version --no-git-tag-version"
   }
 }
@@ -144,4 +178,4 @@ MIT
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. 
+Contributions are welcome! Please feel free to submit a Pull Request.

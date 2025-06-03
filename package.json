@@ -1,6 +1,6 @@
 {
   "name": "expo-version",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Version management tool for Expo React Native apps, similar to npm version but for expo apps",
   "main": "dist/index.js",
   "bin": {
