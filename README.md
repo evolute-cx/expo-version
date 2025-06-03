@@ -2,6 +2,8 @@
 
 Version management tool for Expo React Native apps, similar to `npm version` but designed specifically for Expo projects.
 
+![expo-version CLI in action](./assets/preview.png)
+
 ## Use Case
 
 **Problem**: When using EAS Build, you need to manually update the version in `app.json` before triggering a build. This manual process is error-prone and breaks your development flow.
